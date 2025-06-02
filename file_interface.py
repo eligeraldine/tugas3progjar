@@ -36,7 +36,7 @@ class FileInterface:
 
             with open(filename, 'wb') as fp:
                 fp.write(isifile)
-            return dict(status='OK', data='File uploaded successfully')
+            return dict(status='OK', data=f'File {filename} berhasil diupload ke server')
         
         except Exception as e:
             return dict(status='ERROR', data=str(e))
@@ -49,10 +49,10 @@ class FileInterface:
             
             if os.path.exists(filename):
                 os.remove(filename)
-                return dict(status='OK', data='File deleted successfully')
+                return dict(status='OK', data=f'File {filename} berhasil didelete dari server')
             
             else:
-                return dict(status='ERROR', data='File not found')
+                return dict(status='ERROR', data='File tidak ditemukan')
         
         except Exception as e:
             return dict(status='ERROR', data=str(e))
