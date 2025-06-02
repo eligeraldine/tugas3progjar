@@ -15,38 +15,49 @@ pada akhirnya akan diproses dalam bentuk string
 * class FileProtocol akan memproses data yang masuk dalam bentuk
 string
 """
-
-
-
 class FileProtocol:
     def __init__(self):
         self.file = FileInterface()
-    def proses_string(self,string_datamasuk=''):
-        logging.warning(f"string diproses: {string_datamasuk}")
-
-        c = ""
-        params = []
-        parts = string_datamasuk.split(' ', 1)
-        c_request = parts[0].strip().lower()
-
-        if c_request == 'upload':
-            parts = string_datamasuk.split(' ', 2)
-            c_request = parts[0].strip().lower()
-            filename = parts[1].strip()
-            content = parts[2].strip()
-            params = [filename, content]
-        else:
-            c = shlex.split(string_datamasuk.lower())
-            c_request = c[0].strip()
-            params = [x for x in c[1:]]
-
+        
+    def proses_string(self, string_datamasuk=''):
+        logging.warning(f"processing string of length: {len(string_datamasuk)}")
         try:
-            logging.warning(f"memproses request: {c_request}")
-            cl = getattr(self.file,c_request)(params)
-            logging.warning(f"hasil request: {cl}")
-            return json.dumps(cl)
-        except Exception:
-            return json.dumps(dict(status='ERROR',data='request tidak dikenali'))
+            if " " not in string_datamasuk:
+                c_request = string_datamasuk.strip().lower()
+                params = []
+            else:
+                parts = string_datamasuk.split(" ", 1)
+                c_request = parts[0].strip().lower()
+                
+                if len(parts) < 2:
+                    params = []
+                else:
+                    if c_request == "upload": # ada case khusus untuk upload untuk manage large base64 content
+                        filename_and_content = parts[1].split(" ", 1)
+                        params = filename_and_content
+                    
+                    else:
+                        try:
+                            params = shlex.split(parts[1])
+                        except Exception as e:
+                            logging.warning(f"error parsing parameters with shlex: {str(e)}")
+                            params = parts[1].split()
+            
+            logging.warning(f"request processing: {c_request} --> {len(params)} parameters")
+            if c_request == "upload":
+                logging.warning(f"upload filename: {params[0]}")
+                logging.warning(f"upload file content (base64): {params[1]}") 
+
+            if hasattr(self.file, c_request):
+                cl = getattr(self.file, c_request)(params)
+                return json.dumps(cl)
+            else:
+                return json.dumps(dict(status='ERROR', data='Unknown command'))
+        
+        except Exception as e:
+            logging.warning(f"Request processing error: {str(e)}")
+            return json.dumps(dict(status='ERROR', data=f'Request processing error: {str(e)}'))
+
 
 if __name__=='__main__':
     #contoh pemakaian
