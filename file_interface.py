@@ -49,7 +49,7 @@ class FileInterface:
             
             if os.path.exists(filename):
                 os.remove(filename)
-                return dict(status='OK', data=f'File {filename} berhasil didelete dari server')
+                return dict(status='OK', data=f'File {filename} berhasil dihapus dari server')
             
             else:
                 return dict(status='ERROR', data='File tidak ditemukan')
