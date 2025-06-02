@@ -47,7 +47,7 @@ UPLOAD
 * RESULT:
 - BERHASIL:
   - status: OK
-  - data: File {filename} berhasil diupload ke server
+  - data: File {nama file} berhasil diupload ke server
 - GAGAL:
   - status: ERROR
   - data: pesan kesalahan
@@ -59,7 +59,7 @@ DELETE
 * RESULT:
 - BERHASIL:
   - status: OK
-  - data: File {filename} berhasil didelete dari server
+  - data: File {nama file} berhasil didelete dari server
 - GAGAL:
   - status: ERROR
   - data: pesan kesalahan
