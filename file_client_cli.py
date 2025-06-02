@@ -2,6 +2,7 @@ import socket
 import json
 import base64
 import logging
+import os
 
 server_address=('0.0.0.0',7777)
 
@@ -63,10 +64,10 @@ def remote_get(filename=""):
         print("Gagal")
         return False
 
-def remote_upload(filename=""):
-    f = open(filename, 'rb')
-    data = base64.b64encode(f.read()).decode()
-    f.close()
+def remote_upload(filepath=""):
+    filename = os.path.basename(filepath)  # ambil hanya nama file, tanpa path
+    with open(filepath, 'rb') as f:
+        data = base64.b64encode(f.read()).decode()
 
     command_str = f"UPLOAD {filename} {data}\r\n\r\n"
     hasil = send_command(command_str)
