@@ -73,9 +73,9 @@ def remote_upload(filepath=""):
     hasil = send_command(command_str)
 
     if hasil['status'] == 'OK':
-        print(hasil['data'])
         print(f"File {filename} berhasil diupload ke server")
         return True
+    
     else:
         print("Gagal mengupload file,", hasil['data'])
         return False
@@ -83,10 +83,11 @@ def remote_upload(filepath=""):
 def remote_delete(filename=""):
     command_str = f"DELETE {filename}\r\n\r\n"
     hasil = send_command(command_str)
+    
     if hasil['status'] == 'OK':
-        print(hasil['data'])
         print(f"File {filename} berhasil didelete dari server")
         return True
+    
     else:
         print("Gagal menghapus file,", hasil['data'])
         return False
