@@ -59,7 +59,7 @@ DELETE
 * RESULT:
 - BERHASIL:
   - status: OK
-  - data: File {nama file} berhasil didelete dari server
+  - data: File {nama file} berhasil dihapus dari server
 - GAGAL:
   - status: ERROR
   - data: pesan kesalahan
